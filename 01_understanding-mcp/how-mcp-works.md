@@ -265,6 +265,9 @@ MCP의 Transport Layer는 **실제 메시지를 주고받는 통신 계층**입�
 
 ### 실행 흐름:
 
+<img width="634" alt="image" src="https://github.com/user-attachments/assets/b7557b30-f40f-4527-bb84-bdf9281d6b39" />
+
+
 ```plaintext
 사용자 입력
  → Claude: 실시간 정보 필요 판단
