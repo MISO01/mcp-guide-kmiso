@@ -194,9 +194,10 @@
 
 
 
-3. GITHUB Mcp Server
+# 3. GITHUB Mcp Server
 
-4. 
+<img width="881" alt="image" src="https://github.com/user-attachments/assets/27424394-a9db-48ca-86c8-a6a27438ab2a" />
+
 
 이 문서는 [`smithery-ai/github`](https://github.com/smithery-ai/reference-servers/tree/main/src/github) MCP 서버의 기능을 상세히 정리한 자료입니다. 기능 설명은 실제 MCP 호출 기준이며, **언제 이 기능을 활용하면 좋은지**를 예시와 함께 제공합니다.
 
