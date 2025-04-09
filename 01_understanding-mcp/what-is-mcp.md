@@ -128,8 +128,8 @@ MCP는 **클라이언트-서버 아키텍처**를 기반으로 설계되며,
 - `baidumap-local` MCP: 중국 내 위치 기반 맛집 검색을 모델이 대신 처리  
 - `postgres-query` MCP: 자연어로 입력된 질문을 SQL로 변환해 DB에서 결과를 추출하고 응답  
 
-각 MCP의 실제 동작 방식과 활용 시나리오는  
-[top5-mcps.md](../03_mcp-gallery/top5-mcps.md) 문서에서 상세히 설명되어 있다.
+MCP는 다양한 분야에서 실용적으로 사용될 수 있으며,  
+대표적인 예시는 [02_use-existing-mmcp/top5-mcps.md](../02_use-existing-mmcp/top5-mcps.md) 문서에서 확인할 수 있다.
 
 ---
 
