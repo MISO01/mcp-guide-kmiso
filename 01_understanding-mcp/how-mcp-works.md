@@ -97,21 +97,6 @@ class Session(BaseSession[RequestT, NotificationT, ResultT]):
         """
         # 알림 수신 처리
 
-
-
-
-2. **Transport Layer (전송 계층)**
-
-
-맞아요 미소님, 지적 정확하십니다!  
-`5-2. Transport Layer`부터 마크다운 양식이 일부 깨져서 코드 블록/표 스타일이 Markdown에서 제대로 렌더링되지 않을 수 있어요.  
-그래서 아래는 **`how-mcp-works.md`의 5-2 섹션부터 완전히 정리한 버전**입니다.
-
----
-
-### ✅ `how-mcp-works.md` – 5-2부터 마크다운 양식 보완본
-
-```markdown
 ---
 
 ### 2. Transport Layer (전송 계층)
@@ -177,37 +162,47 @@ MCP의 Transport Layer는 **실제 메시지를 주고받는 통신 계층**입�
 
 ---
 
-### 🔁 연결 수명 주기 요약
+## 6. 연결 수명 주기 요약
 
-1. Initialization
-plaintext
+### 1. Initialization
 
+```text
 [Client] → initialize 요청
 [Server] ← initialize 응답
 [Client] → initialized 알림
-초기 기능 탐색 및 연결 완료
+```
 
-2. Message Exchange
-Request ↔ Response
+### 2. Message Exchange
 
-Notification (일방향 메시지)
+```json
+{
+  "jsonrpc": "2.0",
+  "method": "progress",
+  "params": { "percentage": 70 }
+}
+```
 
-json
-复制
-编辑
-{ "jsonrpc": "2.0", "method": "progress", "params": { "percentage": 70 } }
-3. Termination
-close() 호출
+### 3. Termination
 
-오류 또는 연결 종료
+- close() 호출
+- 네트워크 오류 또는 연결 종료
 
-7. 오류 처리 (Error Handling)
-오류 코드	설명
--32700	JSON 파싱 오류
--32600	잘못된 요청 형식
--32601	메서드 없음
--32602	파라미터 오류
--32603	내부 처리 오류
+---
+
+## 7. 오류 처리
+
+| 오류 코드 | 설명 |
+|-----------|------|
+| -32700 | JSON 파싱 오류 |
+| -32600 | 잘못된 요청 형식 |
+| -32601 | 존재하지 않는 메서드 |
+| -32602 | 파라미터 오류 |
+| -32603 | 내부 처리 오류 |
+
+> -32000 이상은 커스텀 오류 코드로 사용 가능  
+> 오류는 응답, 전송 이벤트, 예외 핸들러를 통해 전파됩니다.
+
+---
 -32000 이상은 커스텀 오류 코드 가능
 
 오류는 응답/전송/핸들러를 통해 전파됨
