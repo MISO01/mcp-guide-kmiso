@@ -90,7 +90,114 @@ Claude 없이 MCP 서버를 테스트할 수 있습니다.
 | Permission prompt 안 뜸 | 클라이언트와 버전 불일치 | Claude 최신 버전인지 확인 |
 | "Cannot execute" 오류 | 실행 권한 없음 | 서버 스크립트에 실행 권한 부여 (`chmod +x`) |
 
+
+
+
+
 ---
+네, 미소님! MCP 디버깅을 **터미널 환경에서만** 효과적으로 수행하는 방법도 꽤 많습니다. GUI 없이도 로그 추적, 서버 상태 확인, 요청 시뮬레이션 등을 충분히 할 수 있어요. 아래에 실무용으로 유용한 터미널 중심 디버깅 방법을 정리해 드릴게요.  
+
+---
+
+## ✅ 1. MCP 로그 실시간 확인
+
+```bash
+tail -n 50 -F ~/Library/Logs/Claude/mcp*.log
+```
+
+- Claude에서 MCP 관련 문제가 발생하면, 이 로그 파일에 거의 대부분의 힌트가 남습니다.
+- 연결 시도, 오류, 끊김 시점 등이 시간 순으로 찍혀요.
+
+---
+
+## ✅ 2. MCP 서버 단독 실행 + 로그 추적
+
+### 예시 (Node.js MCP 서버 기준):
+
+```bash
+DEBUG=mcp* node src/server.js
+```
+
+- `DEBUG=mcp*`는 MCP 관련 내부 로직 흐름을 터미널에서 볼 수 있도록 하는 환경변수예요.
+- 실행 중 어떤 요청이 왔고, 어떤 이유로 실패했는지 확인 가능.
+
+또는 TypeScript 기반이면:
+
+```bash
+npm run dev  # ts-node 기반 실행
+```
+
+---
+
+## ✅ 3. 요청 직접 테스트 (cURL 또는 HTTPie)
+
+```bash
+curl -X POST http://localhost:PORT \
+  -H "Content-Type: application/json" \
+  -d '{
+    "jsonrpc": "2.0",
+    "method": "getWeather",
+    "params": { "city": "Seoul" },
+    "id": 1
+}'
+```
+
+- Claude 없이도 MCP 서버가 잘 응답하는지 확인 가능.
+- `jsonrpc`, `method`, `params`가 올바르게 들어갔는지도 확인할 수 있어요.
+
+---
+
+## ✅ 4. MCP Inspector 로컬 실행
+
+```bash
+npx @modelcontextprotocol/inspector
+```
+
+- Inspector는 Claude 없이도 MCP 서버를 호출해볼 수 있는 터미널 기반 도구예요.
+- 실행 후 localhost에 브라우저가 열리지만, 내부 구조는 Node 기반 CLI로도 동작합니다.
+
+---
+
+## ✅ 5. 프로세스 로그 보기 (백그라운드 MCP 서버 디버깅)
+
+```bash
+ps aux | grep mcp
+```
+
+```bash
+lsof -i :PORT  # 해당 포트 점유 프로세스 확인
+```
+
+- MCP 서버가 예상대로 실행 중인지 확인하거나, 포트 충돌 여부를 추적할 수 있어요.
+
+---
+
+## ✅ 6. MCP JSON 스키마 유효성 검사
+
+```bash
+jq . mcp.json  # JSON 구조 유효성만 간단히 확인
+```
+
+혹은 더 엄격하게 검증하려면 JSON Schema Validator 사용:
+
+```bash
+npx jsonschema -i mcp.json schema.json
+```
+
+---
+
+## 🔄 요약: 순서대로 디버깅 시나리오
+
+1. `tail -f`로 Claude 로그 실시간 확인
+2. MCP 서버 직접 `DEBUG=mcp*` 옵션으로 실행
+3. `curl` 또는 Inspector로 요청 보내보기
+4. `mcp.json` 구조 점검 (`jq`, `jsonschema`)
+5. 포트 충돌, 프로세스 상태 확인 (`lsof`, `ps`, `kill`)
+6. 필요시 DevTools 또는 브라우저로 MCP Inspector 사용
+
+---
+
+
 
 ## 📚 참고 링크
 
@@ -100,3 +207,6 @@ Claude 없이 MCP 서버를 테스트할 수 있습니다.
 ---
 
 > 🛠️ *이 가이드는 `04_build-your-own-mcp/` 디렉토리 내 MCP 서버 개발 시 발생할 수 있는 문제 해결을 목적으로 합니다.*
+
+
+
