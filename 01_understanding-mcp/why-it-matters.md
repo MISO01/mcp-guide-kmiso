@@ -118,7 +118,7 @@ MCP는 Function Calling을 대체하지 않고, **더 강력하고 범용적인 
 OpenAI도 Function Calling, 플러그인, Custom GPT 등을 통해 외부 API와 연동할 수 있다.  
 그러나 MCP는 다음과 같은 **본질적인 차별점**을 갖는다:
 
-| 항목 | OpenAI Plugins (2023 기준) | MCP (Claude / Cursor 기반) |
+| 항목 | OpenAI Plugins | MCP (Claude / Cursor 기반) |
 |------|-----------------------------|-----------------------------|
 | **아키텍처** | Manifest 기반 REST 호출 | Client–Server 구조 기반 JSON 호출 |
 | **설치/등록 방식** | 사용자가 플러그인 스토어에서 수동 설치 | `mcp.json`에 서버 정의만으로 자동 연결 |
