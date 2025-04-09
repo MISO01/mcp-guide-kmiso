@@ -95,17 +95,29 @@ MCP는 일반적으로 다음과 같은 흐름으로 작동한다:
 
 ## 구조 이해
 
-MCP는 다음과 같은 세 가지 주요 컴포넌트로 구성된다:
+MCP는 **클라이언트-서버 아키텍처**를 기반으로 설계되며,  
+하나의 MCP Host는 MCP Client를 통해 여러 MCP Server들과 연결될 수 있다.
+
+<img width="854" alt="image" src="https://github.com/user-attachments/assets/f1e804f7-70fd-4c30-8d6c-803cb106c2b2" />
+
+
+
+이 구조는 다음과 같이 구성된다:
 
 | 구성 요소       | 역할 설명 |
 |----------------|-----------|
-| **MCP Host**   | 사용자가 AI를 사용하는 플랫폼. Cursor, Smithery, Claude 등이 이에 해당한다. |
-| **MCP Client** | 모델 내부에서 어떤 MCP를 사용할지 판단하고, 요청을 전달하는 역할을 한다. |
-| **MCP Server** | 외부 도구(API, DB 등)와 직접 연결되어 실제 작업을 실행하고 결과를 돌려준다. |
+| **MCP Host**   | 사용자가 AI를 실행하는 플랫폼. Claude Desktop, 코드 편집기(IDE), 커스텀 AI 툴 등이 이에 해당한다. |
+| **MCP Client** | MCP Host 내부에서 작동하며, 사용자의 요청을 적절한 MCP Server로 라우팅하는 역할을 한다. MCP Server와 1:1로 연결된다. |
+| **MCP Server** | 외부 기능(API, 로컬 서비스 등)을 LLM에 노출하는 역할을 하며, 각 서버는 특정 기능 또는 데이터 소스를 담당한다. |
+| **Local Data Source** | 로컬 시스템에 존재하는 데이터 또는 파일 시스템, SQLite, 문서 등이다. MCP Server는 이에 직접 접근하여 정보를 처리한다. |
+| **Remote Service** | 날씨 API, 뉴스 API, 번역 서비스 등 외부 인터넷을 통해 접근 가능한 API이다. MCP Server는 해당 API를 호출해 결과를 반환한다. |
 
-이 구조는 **확장성과 모듈화**가 뛰어나며, 여러 MCP를 동시에 조합해 더 복잡한 작업 흐름을 설계할 수도 있다.  
-즉, MCP는 구조상 **모듈화(Modular)** 되어 있어, 여러 개의 MCP를 동시에 등록하고 조합할 수 있으며,  
-필요에 따라 안전한 요청 흐름 제어 및 권한 설정도 가능하다.
+이 아키텍처는 다음과 같은 특징을 가진다:
+
+- **모듈화(Modular)**: 기능 단위로 MCP Server를 나눌 수 있어, 원하는 기능만 선택적으로 구성 가능  
+- **확장성(Scalable)**: MCP Host 하나에서 여러 MCP Server를 동시에 사용할 수 있음  
+- **보안성(Secure Access)**: MCP Server는 로컬 또는 인터넷 리소스에 안전하게 접근하며, 필요한 권한 범위 내에서 작동함  
+- **표준화된 통신**: 모든 요청과 응답은 MCP Protocol을 통해 JSON 형식으로 통신되며, 언어 모델이 해석할 수 있도록 구성됨
 
 ---
 
